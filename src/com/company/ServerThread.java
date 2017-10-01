@@ -106,7 +106,7 @@ public class ServerThread implements Runnable{
                             System.out.println("Error");
                         }
                     }
-                    String fileId=id+"to"+receiverId+retrievedFileName;
+                    String fileId="("+id+"to"+receiverId+")"+retrievedFileName;
 
 
                     //////toReceiver
@@ -123,9 +123,19 @@ public class ServerThread implements Runnable{
 
                     fileReceiver.receive();
 
+                    if(br.readLine().startsWith("File")){
+                        if(fileReceiver.getTotal()==retrievedFileSize){
+                            pr.println("Successfully received in destination");
+                            pr.flush();
+                        }
+                        else{
+                            File f=new File("Server/"+fileId);
+                            f.delete();
+                        }
+                    }
+
 //                    System.out.println(br.readLine()+"tanmoy");
-                    pr.println("Successfully received in destination");
-                    pr.flush();
+
 
                     PrintWriter prToDesClient=new PrintWriter(Server.hashtable.get(receiverId).getOutputStream());
                     prToDesClient.println("Receive file from: "+id+"?    "+"File Size:"+retrievedFileSize+"    "+"Chunk Size:"+chunkSize);

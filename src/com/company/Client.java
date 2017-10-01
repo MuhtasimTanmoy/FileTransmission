@@ -139,11 +139,16 @@ public class Client {
 
                         fileSender.sendFile();
 
+                        printWriter.println("File sent");
+                        printWriter.flush();
+
 //                    printWriter.println("Downloaded.");
 //
 //                    printWriter.flush();
 
                         System.out.println(bufferedReader.readLine());
+
+
 
 
                     } else {

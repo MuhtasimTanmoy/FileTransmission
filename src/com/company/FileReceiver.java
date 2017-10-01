@@ -16,6 +16,7 @@ public class FileReceiver  {
     private int chunkSize;
     private PrintWriter printWriter;
     BufferedReader bufferedReader;
+    private int mtotal=0;
 
 
     public FileReceiver(String fileName, Socket socket, int fileSize,int chunkSize) {
@@ -40,6 +41,9 @@ public class FileReceiver  {
     public String getFileName() {
 
         return fileName;
+    }
+    public int getTotal(){
+        return mtotal;
     }
 
     public void setFileName(String fileName) {
@@ -94,7 +98,7 @@ public class FileReceiver  {
             }
             total += bytesRead;
             try {
-                printWriter.println(total+"-receieved in desnination");
+                printWriter.println(total+" -receieved in server");
                 printWriter.flush();
 
 
@@ -104,6 +108,7 @@ public class FileReceiver  {
             }
             System.out.println(total + "received");
         }
+        mtotal=total;
         try {
             bos.flush();
         } catch (IOException e1) {

@@ -95,8 +95,7 @@ public class FileSender {
 
 
 
-         System.out.println("Sending file ... "+(current*100)/fileSize+"% complete!");
-             System.out.println("Sending file ... "+current+"% complete!");
+         System.out.println("Sending file ... "+current+" bytes done..."+(current*100)/fileSize+"% complete!");
 
          }
          outputStream.flush();
