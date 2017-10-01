@@ -48,12 +48,16 @@ public class FileSender {
         this.chunkSize = chunkSize;
     }
 
-    public FileSender(File file, Socket socket, String fileId, int chunkSize) throws SocketException {
+    public FileSender(File file, Socket socket, String fileId, int chunkSize) throws SocketTimeoutException {
         this.file = file;
         this.socket = socket;
         this.fileId = fileId;
         this.chunkSize = chunkSize;
-        //this.socket.setSoTimeout(30000);
+        try {
+            this.socket.setSoTimeout(30000);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -88,8 +92,14 @@ public class FileSender {
          outputStream.write(buffer);
 
             try {
-                System.out.println(br.readLine());
+                String acknowledgement=br.readLine();
+                System.out.println(acknowledgement);
+
+
             }catch (SocketTimeoutException e){
+                ///timeout message to be sent
+
+                break;
 
             }
 

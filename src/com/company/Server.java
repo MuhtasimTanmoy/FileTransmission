@@ -14,6 +14,8 @@ import java.util.Hashtable;
 public class Server {
     public static int workerThreadCount = 0;
 
+    public static final int SOCKET_PORT=5555;
+
     public static ArrayList<String> clientList=new ArrayList<>();
 
     public static int maxSize=1024000;
@@ -30,7 +32,7 @@ public class Server {
 
         try
         {
-            ServerSocket serverSocket = new ServerSocket(5555);
+            ServerSocket serverSocket = new ServerSocket(SOCKET_PORT);
 
             System.out.println("Server has been started successfully.");
 
@@ -38,30 +40,31 @@ public class Server {
             {
                 Socket s = serverSocket.accept();		//TCP Connection
 
-                BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(s.getInputStream()));
-                PrintWriter printWriter=new PrintWriter(s.getOutputStream());
+                PrintWriter printWriter;
+                InputStreamReader inputStreamReader;
+                BufferedReader bufferedReader;
+
+                printWriter=new PrintWriter(s.getOutputStream());
+                inputStreamReader=new InputStreamReader(s.getInputStream());
+                bufferedReader=new BufferedReader(inputStreamReader);
 
                 clientId=bufferedReader.readLine();
 
+
+
                 System.out.println(clientId);
 
-                if(clientList.contains(clientId)){
+                Boolean idFound=ServerStaticTable.checkIfOnline(clientId,printWriter,s,clientList);
 
-                    printWriter.println("Login denied.Already logged in.");
-                    printWriter.flush();
-                    printWriter.close();
-                    bufferedReader.close();
-                    s.close();
+
+                while(idFound){
+                    clientId=bufferedReader.readLine();
+                    idFound=ServerStaticTable.checkIfOnline(clientId,printWriter,s,clientList);
 
                 }
-                else {
 
 
-                    printWriter.println("Successfull login. you can send file.");
-                    printWriter.println();
-                    printWriter.flush();
 
-                    clientList.add(clientId);
                     hashtable.put(clientId,s);
                     ServerThread wt = new ServerThread(s, clientId);
                     Thread t = new Thread(wt);
@@ -69,7 +72,7 @@ public class Server {
                     workerThreadCount++;
                     System.out.println("Client [" + clientId + "] is w connected. . of worker threads = " + workerThreadCount);
 
-                }
+
 
 
 

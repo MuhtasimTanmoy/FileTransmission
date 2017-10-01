@@ -30,6 +30,7 @@ public class Client {
                 id = new Scanner(System.in).nextLine();
 
 
+                //sending id
                 printWriter.println(id);
                 printWriter.flush();
 
@@ -39,9 +40,7 @@ public class Client {
                 if (s.startsWith("S")) {
                     break;
                 }
-                else{
-                    System.exit(0);
-                }
+
 
             } catch (Exception e) {
                 System.err.println("Problem in connecting with the server. Exiting main.");
@@ -57,7 +56,6 @@ public class Client {
             strRecv = bufferedReader.readLine();
             if (strRecv != null) {
                 System.out.println(strRecv);
-                System.out.println(bufferedReader.readLine());
                 System.out.println(bufferedReader.readLine());
                 System.out.println(bufferedReader.readLine());
 
