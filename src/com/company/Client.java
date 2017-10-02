@@ -183,7 +183,7 @@ public class Client {
 
                 byte[] b=new byte[fileSize];
                 int received=socket.getInputStream().read(b);
-                System.out.println(received);
+                System.out.println(fileId+" ["+received + " ]bytes successfully received");
 
                 if(received==fileSize){
                     FileOutputStream fos = new FileOutputStream(new File("Receiver/"+fileId));
