@@ -1,86 +1,62 @@
-//package com.company;
+package com.company;
+
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+class Temp {
+
+
+
+
+
+
+    public static void main(String args[]) throws IOException {
+
+
+//        Path path = Paths.get("Client/" + "n.txt");
+//        System.out.println(path.getFileName());
+//        byte[] data = Files.readAllBytes(path);
+//        System.out.println(data.length);
+        String s;
+
+        //byte[] data = new byte[]{(byte) 0x7f, (byte) 0xff};
+
+
 //
-///**
-// * Created by t on 9/23/17.
-// */
+//        ByteArrayToStuffedString byteArrayToStuffedString=new ByteArrayToStuffedString();
+//        s=byteArrayToStuffedString.get(data);
+//        System.out.println(s);
+//        System.out.println(byteArrayToStuffedString.getExtraLength());
 //
-//
-//
-// while(true)
-//         {
-//         try
-//         {
-//         if( (str = br.readLine()) != null )
-//         {
-//         if(str.equals("BYE"))
-//         {
-//         System.out.println("[" + id + "] says: BYE. Worker thread will terminate w.");
-//         break; // terminate the loop; it will terminate the thread also
-//         }
-//         else if(str.equals("DL"))
-//         {
-//         try
-//         {
-//         File file = new File("test.jpg");
-//         FileInputStream fis = new FileInputStream(file);
-//         BufferedInputStream bis = new BufferedInputStream(fis);
-//         OutputStream os = socket.getOutputStream();
-//         byte[] contents;
-//         long fileLength = file.length();
-//         pr.println(String.valueOf(fileLength));		//These two lines are used
-//         pr.flush();									//to send the file size in bytes.
-//
-//         long current = 0;
-//
-//         long start = System.naTime();
-//         while(current!=fileLength){
-//         int size = 10000;
-//         if(fileLength - current >= size)
-//         current += size;
-//         else{
-//         size = (int)(fileLength - current);
-//         current = fileLength;
-//         }
-//         contents = new byte[size];
-//         bis.read(contents, 0, size);
-//         os.write(contents);
-//         System.out.println("Sending file ... "+(current*100)/fileLength+"% complete!");
-//         }
-//         os.flush();
-//         System.out.println("File sent successfully!");
-//         }
-//         catch(Exception e)
-//         {
-//         System.err.println("Could t transfer file."+e);
-//         }
-//         pr.println("Downloaded.");
-//         pr.flush();
-//
-//         }
-//         else
-//         {
-//         System.out.println("[" + id + "] says: " + str);
-//         pr.println("Got it. You sent \"" + str + "\"");
-//         pr.flush();
-//         }
-//         }
-//         else
-//         {
-//         System.out.println("[" + id + "] terminated connection. Worker thread will terminate w.");
-//         break;
-//         }
-//         }
-//         catch(Exception e)
-//         {
-//         System.err.println("Problem in communicating with the client [" + id + "]. Terminating worker thread.");
-//         break;
-//         }
-//         }
-//
-//
-//
-//public class temp {
-//}
-//
-//
-//
+//        System.out.println("Data: "+s.substring(s.length()-s.length()%8,s.length()));
+
+
+        byte sdata[];
+        s="00001110000011110111011101";
+
+        StringToByteArray stringToByteArray=new StringToByteArray();
+
+        sdata=stringToByteArray.get(s);
+        System.out.println(sdata[0]);
+        System.out.println(sdata[1]);
+        System.out.println(sdata[2]);
+        System.out.println(sdata[3]);
+
+
+
+
+
+//        byte ss=stringToByte("01111111");
+//        System.out.println(ss);
+
+
+    }
+
+}
+
+
+
+

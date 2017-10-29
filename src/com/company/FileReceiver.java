@@ -38,32 +38,8 @@ public class FileReceiver  {
         }
     }
 
-    public String getFileName() {
-
-        return fileName;
-    }
     public int getTotal(){
         return mtotal;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public Socket getSocket() {
-        return socket;
-    }
-
-    public void setSocket(Socket socket) {
-        this.socket = socket;
-    }
-
-    public long getFileSize() {
-        return fileSize;
-    }
-
-    public void setFileSize(int fileSize) {
-        this.fileSize = fileSize;
     }
 
 
@@ -106,7 +82,7 @@ public class FileReceiver  {
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-            System.out.println(total + "received");
+            System.out.println(total + " received");
         }
         mtotal=total;
         try {

@@ -9,6 +9,7 @@ public class ServerBufferChecker {
 
     private String fileName;
     private int fileSize;
+    private int CHUNK_LIMIT=200;
     private int chunkSize;
     private Random random;
 
@@ -21,7 +22,7 @@ public class ServerBufferChecker {
     public int check(){
         if(Server.used+fileSize<Server.maxSize){
             Server.used+=fileSize;
-            chunkSize=random.nextInt(500)+1000;
+            chunkSize=CHUNK_LIMIT;
             return chunkSize;
         }
         else{

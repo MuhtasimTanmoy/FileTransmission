@@ -74,31 +74,7 @@ public class Client {
         System.out.println("Type 's' to send 'r' to receive");
 
 
-//        Thread t = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                System.out.println("inside Thread");
-//
-//                try {
-//                    System.out.println(bufferedReader.readLine());
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//
-////                FileReceiver fileReceiver=new FileReceiver("test",socket,,chunkSize);
-////
-////
-////                fileReceiver.receive();
-//
-//
-//            }
-//        });
-//        t.start();
-//        System.out.println("this running too0000");
-
         String temp = input.nextLine();
-       // System.out.println(temp.equals("s"));
-
         if (temp.equals("s")) {
 
             printWriter.println("s");
@@ -140,9 +116,6 @@ public class Client {
                         printWriter.println("File sent");
                         printWriter.flush();
 
-//                    printWriter.println("Downloaded.");
-//
-//                    printWriter.flush();
 
                         System.out.println(bufferedReader.readLine());
 
@@ -191,29 +164,6 @@ public class Client {
                     fos.close();
                 }
 
-
-
-
-//                System.out.println(fileSize+chunkSize);
-//                System.out.println("y or n");
-//
-//                String decision=input.nextLine();
-//                printWriter.println(decision);
-//                printWriter.flush();
-//
-//                System.out.println(1+bufferedReader.readLine());
-
-//
-//                if(decision.equals("y")){
-//
-//
-//
-//
-////
-////                FileReceiver fileReceiver=new FileReceiver("Receiver/"+id,socket,fileSize,chunkSize);
-////                fileReceiver.receive();
-//            }
-//
             } catch (IOException e) {
                 e.printStackTrace();
             }

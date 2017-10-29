@@ -1,13 +1,10 @@
 package com.company;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
-
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Hashtable;
 import java.util.Iterator;
 
 /**
@@ -99,11 +96,13 @@ public class ServerThread implements Runnable{
 
 
 
+
                     ServerBufferChecker serverBufferChecker=new ServerBufferChecker(retrievedFileName,retrievedFileSize);
                     int chunkSize=serverBufferChecker.check();
                     if(chunkSize==0){
-                        while(true){
+                        if(true){
                             System.out.println("Error");
+                            System.exit(0);
                         }
                     }
                     String fileId="("+id+"to"+receiverId+")"+retrievedFileName;
@@ -134,11 +133,9 @@ public class ServerThread implements Runnable{
                         }
                     }
 
-//                    System.out.println(br.readLine()+"tanmoy");
-
 
                     PrintWriter prToDesClient=new PrintWriter(Server.hashtable.get(receiverId).getOutputStream());
-                    prToDesClient.println("Receive file from: "+id+"?    "+"File Size:"+retrievedFileSize+"    "+"Chunk Size:"+chunkSize);
+                    prToDesClient.println("Receiving file from: "+id+"    "+"File Size:"+retrievedFileSize+"    "+"Chunk Size:"+chunkSize);
                     prToDesClient.println(retrievedFileSize);
                     prToDesClient.println(chunkSize);
                     prToDesClient.println(fileId);
@@ -156,55 +153,13 @@ public class ServerThread implements Runnable{
 
 
 
+                    //deleteChunkFromServer(fileId);
 
 
-
-
-
-                    //BufferedReader brFromDesClient=new BufferedReader(new InputStreamReader(Server.hashtable.get(receiverId).getInputStream()));
-//                    System.out.println(brFromDesClient.readLine());
-
-
-//                   if(brFromDesClient.readLine().equals("y")){
-//
-//
-//
-//                       ///todo
+                    ///todo
 //
 ////                       FileSender fileSender=new FileSender(new File("Server/"+fileId),Server.hashtable.get(receiverId),fileId,chunkSize);
 ////                       fileSender.sendFile();
-//
-//
-//                   }
-//                   else{
-//                       System.out.println("Connection refused");
-//                   };
-
-
-                    File f=new File("Server/"+fileId);
-                    f.delete();
-
-
-
-
-
-//                    PrintWriter printWriter3=new PrintWriter(Server.hashtable.get(receiverId).getOutputStream());
-//                    printWriter3.write("Do you want to have a file from ");
-//                    printWriter3.flush();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
                 } else {
@@ -234,4 +189,11 @@ public class ServerThread implements Runnable{
         System.out.println("Client [" + id + "] is w terminating. . of worker threads = "
                 + Server.workerThreadCount);
     }
+
+
+    void deleteChunkFromServer(String fileId){
+        File f=new File("Server/"+fileId);
+        f.delete();
+    }
+
 }
