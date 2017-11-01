@@ -82,7 +82,12 @@ public class FileReceiver  {
 //            System.out.println(byteArrayToStuffedString.getDeStuffed(content));
 
                 String payloadWithChecksum=byteArrayToStuffedString.getDeStuffed(receivedContent);
-                String payload=payloadWithChecksum.substring(0,payloadWithChecksum.length()-8);
+
+                String kindOfFrame=payloadWithChecksum.substring(0,8);
+                String sequence=payloadWithChecksum.substring(8,16);
+                String awknowledgement=payloadWithChecksum.substring(16,24);
+                System.out.println("Kind of frame :"+ kindOfFrame+" Sequence no: "+ sequence+" Awknoledgement no: "+awknowledgement);
+                String payload=payloadWithChecksum.substring(24,payloadWithChecksum.length()-8);
                 String checkSum=payloadWithChecksum.substring(payloadWithChecksum.length()-8,payloadWithChecksum.length());
                 System.out.println("Received Payload: "+payload);
                 System.out.println("Received Checksum: "+checkSum);
@@ -91,6 +96,12 @@ public class FileReceiver  {
                 String calculatedChecksum=checkSumGetter.get(payload);
 
                 System.out.println("Calculated Checksum: "+calculatedChecksum);
+
+                if(!checkSum.equals(calculatedChecksum)){
+                    System.out.println("Checksum does not match");
+                    break;
+
+                }
 
                 StringToByteArray stringToByteArray=new StringToByteArray();
                 receivedPayload=stringToByteArray.get(payload);

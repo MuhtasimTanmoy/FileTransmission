@@ -42,7 +42,11 @@ public class ByteArrayToStuffedString {
 
         CheckSum checkSum=new CheckSum();
 
-        payload=payload+checkSum.get(payload);
+        String kindOfFrame="11111111";
+        String sequence="01010101";
+        String awknowledgement="11111111";
+
+        payload=kindOfFrame+sequence+awknowledgement+payload+checkSum.get(payload);
 
 
         String stuffedPayload = new String();
@@ -93,9 +97,24 @@ public class ByteArrayToStuffedString {
         //0111111111111110
         //011111111111111010000001
 
-        int p=0;
+      //  int p=0;
+//        while(true){
+//            if(payload.substring(payload.length()-8-p,payload.length()-p).equals("01111110")){
+//                break;
+//            }
+//            else{
+//                p++;
+//            }
+//        }
+
+ //       payload=payload.substring(8,payload.length()-8-p);
+
+
+
+
+        int p=8;
         while(true){
-            if(payload.substring(payload.length()-8-p,payload.length()-p).equals("01111110")){
+            if(payload.substring(p,p+8).equals("01111110")){
                 break;
             }
             else{
@@ -103,11 +122,12 @@ public class ByteArrayToStuffedString {
             }
         }
 
-        payload=payload.substring(8,payload.length()-8-p);
+        payload=payload.substring(8,p);
 
 
 
-//          System.out.println("To be Destuffed payload only:"+payload);
+
+ System.out.println("To be Destuffed payload only:"+payload);
 
 
 

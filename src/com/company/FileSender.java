@@ -81,8 +81,10 @@ public class FileSender {
 
 
          outputStream.write(byteArray);
+         System.out.println("Sending file ... "+current+" bytes done..."+(current*100)/fileSize+"% complete!");
 
-            try {
+
+             try {
                 String acknowledgement=br.readLine();
                 System.out.println(acknowledgement);
 
@@ -96,7 +98,6 @@ public class FileSender {
 
 
 
-         System.out.println("Sending file ... "+current+" bytes done..."+(current*100)/fileSize+"% complete!");
 
          }
          outputStream.flush();
