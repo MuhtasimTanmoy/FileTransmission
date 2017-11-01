@@ -19,18 +19,26 @@ public class StringToByteArray {
     public byte[] get(String array){
         String toByte=array;
         String payloadChunk;
-        byte[] totalByte=new byte[toByte.length()/8+1];
+        int residue=toByte.length()%8;
+        byte[] totalByte;
+        if(residue==0){
+            totalByte = new byte[toByte.length() / 8];
+
+        }
+        else {
+           totalByte = new byte[toByte.length() / 8 + 1];
+        }
         int byteIndex=0;
         for(int i=8;i<=toByte.length();i+=8){
             payloadChunk=toByte.substring(i-8,i);
-            System.out.println(payloadChunk);
+//            System.out.println(payloadChunk);
             totalByte[byteIndex]=stringToByte(payloadChunk);
             byteIndex++;
         }
-        int residue=toByte.length()%8;
+       // System.out.println(residue);
         if(residue!=0){
             payloadChunk=toByte.substring(toByte.length()-residue,toByte.length());
-            System.out.println(payloadChunk);
+//            System.out.println(payloadChunk);
             totalByte[byteIndex]=stringToByte(payloadChunk);
 
         }

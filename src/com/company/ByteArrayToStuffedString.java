@@ -36,24 +36,29 @@ public class ByteArrayToStuffedString {
         }
 
         //input byte print
-        System.out.println(payload);
+        System.out.println("Payload: "+payload);
+
+        ///Checksome done
+
+        CheckSum checkSum=new CheckSum();
+
+        payload=payload+checkSum.get(payload);
+
 
         String stuffedPayload = new String();
         stuffedPayload = "";
         int countOne = 0;
-        int fixer = 0;
 
         for (int i = 0; i < payload.length(); i++) {
             if (payload.charAt(i) == '0') {
                 countOne = 0;
-                fixer = 0;
                 stuffedPayload += 0;
             } else {
                 countOne++;
-                if (countOne == (6 + fixer)) {
-                    fixer = -1;
+                if (countOne == 5) {
                     countOne = 0;
-                    stuffedPayload += "01";
+
+                    stuffedPayload += "10";
                     extraLength++;
 
                 } else {
@@ -63,8 +68,78 @@ public class ByteArrayToStuffedString {
             }
         }
 
+        System.out.println("Stuffed payload: "+stuffedPayload);
+        ///delimeter done
+
+        stuffedPayload="01111110"+stuffedPayload+"01111110";
+
+        System.out.println("Frame :"+stuffedPayload);
+
+
         return stuffedPayload;
 
+    }
+
+    public String getDeStuffed(byte[] data){
+        String payload = new String();
+        payload = "";
+        for (int i = 0; i < data.length; i++) {
+            payload += bitToString(data[i]);
+        }
+
+        ////
+      System.out.println("Received Frame: "+payload);
+
+        //0111111111111110
+        //011111111111111010000001
+
+        int p=0;
+        while(true){
+            if(payload.substring(payload.length()-8-p,payload.length()-p).equals("01111110")){
+                break;
+            }
+            else{
+                p++;
+            }
+        }
+
+        payload=payload.substring(8,payload.length()-8-p);
+
+
+
+//          System.out.println("To be Destuffed payload only:"+payload);
+
+
+
+        String deStuffedPayload = new String();
+        deStuffedPayload = "";
+        int countOne = 0;
+
+        for (int i = 0; i < payload.length(); i++) {
+            if (payload.charAt(i) == '0') {
+                countOne = 0;
+                deStuffedPayload += 0;
+            } else {
+                countOne++;
+                if (countOne == 5) {
+                    countOne = 0;
+
+                    deStuffedPayload += "1";
+                    i++;
+
+                } else {
+                    deStuffedPayload += "1";
+                }
+
+            }
+        }
+
+
+//        System.out.println("Destuffed: "+deStuffedPayload);
+
+
+
+        return deStuffedPayload;
     }
 
 

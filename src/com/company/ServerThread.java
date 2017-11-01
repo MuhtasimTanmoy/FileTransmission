@@ -122,14 +122,16 @@ public class ServerThread implements Runnable{
 
                     fileReceiver.receive();
 
+
+
                     if(br.readLine().startsWith("File")){
                         if(fileReceiver.getTotal()==retrievedFileSize){
                             pr.println("Successfully received in destination");
                             pr.flush();
                         }
                         else{
-                            File f=new File("Server/"+fileId);
-                            f.delete();
+//                            File f=new File("Server/"+fileId);
+//                            f.delete();
                         }
                     }
 

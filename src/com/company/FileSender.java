@@ -56,7 +56,31 @@ public class FileSender {
          }
          buffer = new byte[size];
          bufferedInputStream.read(buffer, 0, size);
-         outputStream.write(buffer);
+
+
+
+
+         /////
+
+
+             ByteArrayToStuffedString byteArrayToStuffedString=new ByteArrayToStuffedString();
+             String stuffedString=byteArrayToStuffedString.get(buffer);
+
+             //System.out.println(stuffedString);
+
+
+             StringToByteArray stringToByteArray=new StringToByteArray();
+             byte[] byteArray=stringToByteArray.get(stuffedString);
+
+//             System.out.println(byteArray);
+
+
+
+
+        ////
+
+
+         outputStream.write(byteArray);
 
             try {
                 String acknowledgement=br.readLine();

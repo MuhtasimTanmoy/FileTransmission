@@ -47,7 +47,11 @@ public class FileReceiver  {
     void receive()  {
 
 
-        byte[] contents = new byte[chunkSize];
+        byte[] contents = new byte[chunkSize+chunkSize/5+6];
+
+        byte[] receivedContent;
+
+        byte[] receivedPayload=new byte[1];
 
 
         FileOutputStream fos = null;
@@ -69,6 +73,34 @@ public class FileReceiver  {
             try {
                 bytesRead = inputStream.read(contents);
 
+                receivedContent=new byte[bytesRead];
+                for(int i=0;i<bytesRead;i++){
+                    receivedContent[i]=contents[i];
+                }
+
+                ByteArrayToStuffedString byteArrayToStuffedString=new ByteArrayToStuffedString();
+//            System.out.println(byteArrayToStuffedString.getDeStuffed(content));
+
+                String payloadWithChecksum=byteArrayToStuffedString.getDeStuffed(receivedContent);
+                String payload=payloadWithChecksum.substring(0,payloadWithChecksum.length()-8);
+                String checkSum=payloadWithChecksum.substring(payloadWithChecksum.length()-8,payloadWithChecksum.length());
+                System.out.println("Received Payload: "+payload);
+                System.out.println("Received Checksum: "+checkSum);
+
+                CheckSum checkSumGetter=new CheckSum();
+                String calculatedChecksum=checkSumGetter.get(payload);
+
+                System.out.println("Calculated Checksum: "+calculatedChecksum);
+
+                StringToByteArray stringToByteArray=new StringToByteArray();
+                receivedPayload=stringToByteArray.get(payload);
+
+                bytesRead=receivedPayload.length;
+
+
+
+
+
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -78,7 +110,7 @@ public class FileReceiver  {
                 printWriter.flush();
 
 
-                bos.write(contents, 0, bytesRead);
+                bos.write(receivedPayload, 0, bytesRead);
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
