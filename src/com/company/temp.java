@@ -8,6 +8,27 @@ import java.nio.file.Paths;
 
 class Temp {
 
+    private static String bitToString(byte array) {
+        byte toString = array;
+        String s = new String();
+        for (int i = 7; i >= 0; i--) {
+            s += (String.valueOf(array >> i & 1));
+        }
+        return s;
+    }
+
+    private static byte stringToByte(String array) {
+        String toByte=array;
+        byte s=0x00;
+        for(int i=0;i<toByte.length();i++) {
+            if(toByte.charAt(i)=='1'){
+                s= (byte) (s|(1<<(7-i)));
+            }
+        }
+        return s;
+
+    }
+
 
 
 
@@ -16,11 +37,11 @@ class Temp {
     public static void main(String args[]) throws IOException {
 
 
-        Path path = Paths.get("Client/" + "n.txt");
-        System.out.println(path.getFileName());
-        byte[] data = Files.readAllBytes(path);
-        System.out.println(data.length);
-        String s;
+//        Path path = Paths.get("Client/" + "n.txt");
+//        System.out.println(path.getFileName());
+//        byte[] data = Files.readAllBytes(path);
+//        System.out.println(data.length);
+//        String s;
 
         //byte[] data = new byte[]{(byte) 0x7f, (byte) 0xff};
 
@@ -51,6 +72,20 @@ class Temp {
 
 //        byte ss=stringToByte("01111111");
 //        System.out.println(ss);
+
+        int p=127;
+        byte by=(byte)p;
+        String s=bitToString(by);
+
+        System.out.println(s);
+
+        by=stringToByte(s);
+        p=(int)by;
+        System.out.println(p+1);
+
+
+
+
 
 
     }

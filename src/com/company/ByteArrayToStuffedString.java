@@ -5,6 +5,7 @@ package com.company;
  */
 public class ByteArrayToStuffedString {
     private int extraLength;
+    private int sequenceNo=1;
 
     int getExtraLength(){
         return extraLength;
@@ -43,7 +44,9 @@ public class ByteArrayToStuffedString {
         CheckSum checkSum=new CheckSum();
 
         String kindOfFrame="11111111";
-        String sequence="01010101";
+
+        String sequence=bitToString((byte)sequenceNo);
+        sequenceNo++;
         String awknowledgement="11111111";
 
         payload=kindOfFrame+sequence+awknowledgement+payload+checkSum.get(payload);

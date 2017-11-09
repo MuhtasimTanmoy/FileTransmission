@@ -42,6 +42,18 @@ public class FileReceiver  {
         return mtotal;
     }
 
+    private byte stringToByte(String array) {
+        String toByte=array;
+        byte s=0x00;
+        for(int i=0;i<toByte.length();i++) {
+            if(toByte.charAt(i)=='1'){
+                s= (byte) (s|(1<<(7-i)));
+            }
+        }
+        return s;
+
+    }
+
 
 
     void receive()  {
@@ -85,8 +97,10 @@ public class FileReceiver  {
 
                 String kindOfFrame=payloadWithChecksum.substring(0,8);
                 String sequence=payloadWithChecksum.substring(8,16);
+                int sequenceNo=(int)stringToByte(sequence);
+
                 String awknowledgement=payloadWithChecksum.substring(16,24);
-                System.out.println("Kind of frame :"+ kindOfFrame+" Sequence no: "+ sequence+" Awknoledgement no: "+awknowledgement);
+                System.out.println("Kind of frame :"+ kindOfFrame+" Sequence no: "+sequenceNo +" ("+ sequence +") Awknoledgement no: "+awknowledgement);
                 String payload=payloadWithChecksum.substring(24,payloadWithChecksum.length()-8);
                 String checkSum=payloadWithChecksum.substring(payloadWithChecksum.length()-8,payloadWithChecksum.length());
                 System.out.println("Received Payload: "+payload);

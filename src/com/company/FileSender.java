@@ -13,6 +13,7 @@ public class FileSender {
     private Socket socket;
     private String fileId;
     private int chunkSize;
+    private ByteArrayToStuffedString byteArrayToStuffedString;
 
 
     public FileSender(File file, Socket socket, String fileId, int chunkSize) throws SocketTimeoutException {
@@ -20,6 +21,8 @@ public class FileSender {
         this.socket = socket;
         this.fileId = fileId;
         this.chunkSize = chunkSize;
+        byteArrayToStuffedString=new ByteArrayToStuffedString();
+
         try {
             this.socket.setSoTimeout(30000);
         } catch (SocketException e) {
@@ -47,6 +50,8 @@ public class FileSender {
             long start = System.nanoTime();
 
          while(current<fileSize){
+
+
          int size = chunkSize;
          if(fileSize - current >= size)
          current += size;
@@ -63,7 +68,6 @@ public class FileSender {
          /////
 
 
-             ByteArrayToStuffedString byteArrayToStuffedString=new ByteArrayToStuffedString();
              String stuffedString=byteArrayToStuffedString.get(buffer);
 
              //System.out.println(stuffedString);
