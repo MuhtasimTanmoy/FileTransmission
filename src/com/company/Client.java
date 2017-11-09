@@ -3,6 +3,7 @@ package com.company;
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.TimeoutException;
 
 public class Client {
     private static Socket socket = null;
@@ -18,6 +19,8 @@ public class Client {
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
             printWriter = new PrintWriter(socket.getOutputStream());
+
+
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -131,6 +134,7 @@ public class Client {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
 
 
             }

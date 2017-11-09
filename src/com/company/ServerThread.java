@@ -136,6 +136,8 @@ public class ServerThread implements Runnable{
                     }
 
 
+
+
                     PrintWriter prToDesClient=new PrintWriter(Server.hashtable.get(receiverId).getOutputStream());
                     prToDesClient.println("Receiving file from: "+id+"    "+"File Size:"+retrievedFileSize+"    "+"Chunk Size:"+chunkSize);
                     prToDesClient.println(retrievedFileSize);

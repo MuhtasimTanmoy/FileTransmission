@@ -9,7 +9,7 @@ public class ServerBufferChecker {
 
     private String fileName;
     private int fileSize;
-    private int CHUNK_LIMIT=200;
+    private int CHUNK_LIMIT=20;
     private int chunkSize;
     private Random random;
 

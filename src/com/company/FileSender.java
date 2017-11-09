@@ -24,7 +24,7 @@ public class FileSender {
         byteArrayToStuffedString=new ByteArrayToStuffedString();
 
         try {
-            this.socket.setSoTimeout(30000);
+            this.socket.setSoTimeout(3000);
         } catch (SocketException e) {
             e.printStackTrace();
         }
@@ -38,6 +38,7 @@ public class FileSender {
             BufferedInputStream bufferedInputStream=new BufferedInputStream(fileInputStream);
 
             OutputStream outputStream=socket.getOutputStream();
+            PrintWriter printWriter=new PrintWriter(outputStream);
 
             BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 
@@ -49,9 +50,12 @@ public class FileSender {
             int current = 0;
             long start = System.nanoTime();
 
+            int sequence=1;
+
+            byte[][] savedByteArray=new byte[8][];
+
          while(current<fileSize){
-
-
+             System.out.println(sequence+" no on the way");
          int size = chunkSize;
          if(fileSize - current >= size)
          current += size;
@@ -76,15 +80,26 @@ public class FileSender {
              StringToByteArray stringToByteArray=new StringToByteArray();
              byte[] byteArray=stringToByteArray.get(stuffedString);
 
-//             System.out.println(byteArray);
+
+
+
+            System.out.println("Sent bytes: "+byteArray.length);
+
+            savedByteArray[(sequence-1)%8]=byteArray;
+
+
+//             if(sequence!=2){
+
+                 printWriter.println(byteArray.length);
+            printWriter.flush();
+
 
 
 
 
         ////
-
-
          outputStream.write(byteArray);
+         outputStream.flush();
          System.out.println("Sending file ... "+current+" bytes done..."+(current*100)/fileSize+"% complete!");
 
 
@@ -100,7 +115,35 @@ public class FileSender {
 
             }
 
+//             }
+//             else{
+//                 System.out.println("not sending this");
+//             }
 
+
+             if(sequence%8==0){
+                 String acknowledgement=br.readLine();
+                 System.out.println(acknowledgement);
+                 int lastSequenceNo=Integer.parseInt(br.readLine());
+                 System.out.println(lastSequenceNo);
+                 System.out.println("in 8 th index");
+
+                 int i=0;
+                 while(i<=7){
+                     System.out.println(savedByteArray[i].length);
+                     i++;
+                 }
+
+
+
+             }
+
+
+             System.out.println("");
+             System.out.println("");
+
+
+             sequence++;
 
 
          }

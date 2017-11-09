@@ -59,7 +59,7 @@ public class FileReceiver  {
     void receive()  {
 
 
-        byte[] contents = new byte[chunkSize+chunkSize/5+6];
+        //byte[] contents = new byte[chunkSize+chunkSize/5+6];
 
         byte[] receivedContent;
 
@@ -78,17 +78,26 @@ public class FileReceiver  {
 
 
         int bytesRead = 0;
-        int total = 0;            //how many bytes read
+        int total = 0;//how many bytes read
+        int sequenceNo=1;
+        int lastSequenceNo=0;
+        int errorMode=0;
 
         while (total < fileSize)    //loop is continued until received byte=totalfilesize
         {
-            try {
-                bytesRead = inputStream.read(contents);
 
-                receivedContent=new byte[bytesRead];
-                for(int i=0;i<bytesRead;i++){
-                    receivedContent[i]=contents[i];
-                }
+            try {
+                int received=Integer.parseInt(bufferedReader.readLine());
+                System.out.println("Received length: "+received);
+
+                receivedContent=new byte[received];
+                bytesRead = inputStream.read(receivedContent);
+                System.out.println("Received length: "+bytesRead);
+
+
+//                for(int i=0;i<bytesRead;i++){
+//                    receivedContent[i]=contents[i];
+//                }
 
                 ByteArrayToStuffedString byteArrayToStuffedString=new ByteArrayToStuffedString();
 //            System.out.println(byteArrayToStuffedString.getDeStuffed(content));
@@ -97,7 +106,23 @@ public class FileReceiver  {
 
                 String kindOfFrame=payloadWithChecksum.substring(0,8);
                 String sequence=payloadWithChecksum.substring(8,16);
-                int sequenceNo=(int)stringToByte(sequence);
+                sequenceNo=(int)stringToByte(sequence);
+
+
+
+                /////
+                if(sequenceNo==(lastSequenceNo+1) && errorMode==0){
+                    lastSequenceNo=sequenceNo;
+                }
+                else{
+                    System.out.println("I am here ");
+
+                    errorMode=1;
+
+                }
+
+
+                ////
 
                 String awknowledgement=payloadWithChecksum.substring(16,24);
                 System.out.println("Kind of frame :"+ kindOfFrame+" Sequence no: "+sequenceNo +" ("+ sequence +") Awknoledgement no: "+awknowledgement);
@@ -129,10 +154,13 @@ public class FileReceiver  {
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
+
             total += bytesRead;
             try {
                 printWriter.println(total+" -receieved in server");
                 printWriter.flush();
+
+
 
 
                 bos.write(receivedPayload, 0, bytesRead);
@@ -140,6 +168,18 @@ public class FileReceiver  {
                 e1.printStackTrace();
             }
             System.out.println(total + " received");
+
+            if(sequenceNo%8==0){
+                printWriter.println(total+" -8 no receiveed in ................");
+                printWriter.println(sequenceNo);
+
+                printWriter.flush();
+
+            }
+
+
+            System.out.println("");
+            System.out.println("");
         }
         mtotal=total;
         try {

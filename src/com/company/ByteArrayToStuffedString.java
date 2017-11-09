@@ -46,9 +46,12 @@ public class ByteArrayToStuffedString {
         String kindOfFrame="11111111";
 
         String sequence=bitToString((byte)sequenceNo);
-        sequenceNo++;
+
         String awknowledgement="11111111";
 
+        System.out.println("Kind of frame :"+ kindOfFrame+" Sequence no: "+sequenceNo +" ("+ sequence +") Awknoledgement no: "+awknowledgement);
+
+        sequenceNo++;
         payload=kindOfFrame+sequence+awknowledgement+payload+checkSum.get(payload);
 
 
