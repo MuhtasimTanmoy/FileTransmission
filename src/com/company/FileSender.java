@@ -15,6 +15,12 @@ public class FileSender {
     private int chunkSize;
     private ByteArrayToStuffedString byteArrayToStuffedString;
 
+    public static final String ANSI_RESET="\u001B[0m";
+    public static final String ANSI_GREEN="\u001B[32m";
+    public static final String ANSI_BLUE="\u001B[34m";
+
+
+
 
     public FileSender(File file, Socket socket, String fileId, int chunkSize) throws SocketTimeoutException {
         this.file = file;
@@ -48,14 +54,17 @@ public class FileSender {
             int fileSize=(int)file.length();
 
             int current = 0;
-            long start = System.nanoTime();
 
             int sequence=1;
+
+            int once=0;
+            int twice=0;
+
 
             byte[][] savedByteArray=new byte[8][];
 
          while(current<fileSize){
-             System.out.println(sequence+" no on the way");
+             System.out.println("Frame no: "+sequence+" ");
          int size = chunkSize;
          if(fileSize - current >= size)
          current += size;
@@ -88,9 +97,25 @@ public class FileSender {
             savedByteArray[(sequence-1)%8]=byteArray;
 
 
-//             if(sequence!=2){
 
-                 printWriter.println(byteArray.length);
+            ///////////////////////////////////////////////error introduce//////////////////////
+
+//             if((sequence==2)  && once==0) {
+//
+//                 System.out.println(ANSI_BLUE+"Not sending this frame.Skipping this for GO-Back N protocol check"+ANSI_RESET);
+//                 once=1;
+//             }
+//             else if((sequence==14)  && twice==0) {
+//
+//                 System.out.println(ANSI_BLUE+"Not sending this frame.Skipping this for GO-Back N protocol check"+ANSI_RESET);
+//                 twice=1;
+//             }
+//
+//             else{
+
+                 //////////////////////////////////////................////////////////////////
+
+             printWriter.println(byteArray.length);
             printWriter.flush();
 
 
@@ -115,23 +140,72 @@ public class FileSender {
 
             }
 
-//             }
-//             else{
-//                 System.out.println("not sending this");
-//             }
+
+            /////////////////////////error introduce////////////////////////////////
+        //     }
+
+////////////////////////////......................///////////////////////////////////////
+
 
 
              if(sequence%8==0){
                  String acknowledgement=br.readLine();
-                 System.out.println(acknowledgement);
+//                 System.out.println(acknowledgement);
                  int lastSequenceNo=Integer.parseInt(br.readLine());
-                 System.out.println(lastSequenceNo);
-                 System.out.println("in 8 th index");
+//                 System.out.println(lastSequenceNo);
+//                 System.out.println("in 8 th index");
 
-                 int i=0;
-                 while(i<=7){
-                     System.out.println(savedByteArray[i].length);
-                     i++;
+//                 int i=0;
+//                 while(i<=7){
+//                     System.out.println(savedByteArray[i].length);
+//                     i++;
+//                 }
+                 System.out.println("");
+                 System.out.println("Checking from server for missing frame.");
+                 if(lastSequenceNo!=sequence){
+                     System.out.println("Resending "+(lastSequenceNo+1) +" to " +sequence + " frames." );
+                 for(int j=lastSequenceNo;j<sequence;j++){
+                     printWriter.println(savedByteArray[j%8].length);
+                     printWriter.flush();
+
+
+
+
+
+                     ////
+                     outputStream.write(savedByteArray[j%8]);
+                     outputStream.flush();
+                     System.out.println("Resending "+ (j+1) +" no frame.");
+
+
+
+                     try {
+                         String ack=br.readLine();
+                         System.out.println(ack);
+
+
+                     }catch (SocketTimeoutException e){
+                         ///timeout message to be sent
+
+                         break;
+
+                     }
+
+
+
+
+
+
+
+
+
+                 }
+
+                     String ac=br.readLine();
+//                     System.out.println(ac);
+                     int la=Integer.parseInt(br.readLine());
+//                     System.out.println(la);
+                     System.out.println("Missing frame recovered.Resuming transmission.");
                  }
 
 

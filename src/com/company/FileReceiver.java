@@ -18,6 +18,12 @@ public class FileReceiver  {
     BufferedReader bufferedReader;
     private int mtotal=0;
 
+    public static final String ANSI_RESET="\u001B[0m";
+    public static final String ANSI_GREEN="\u001B[32m";
+    public static final String ANSI_BLUE="\u001B[34m";
+
+
+
 
     public FileReceiver(String fileName, Socket socket, int fileSize,int chunkSize) {
         this.fileName = fileName;
@@ -92,7 +98,6 @@ public class FileReceiver  {
 
                 receivedContent=new byte[received];
                 bytesRead = inputStream.read(receivedContent);
-                System.out.println("Received length: "+bytesRead);
 
 
 //                for(int i=0;i<bytesRead;i++){
@@ -115,7 +120,7 @@ public class FileReceiver  {
                     lastSequenceNo=sequenceNo;
                 }
                 else{
-                    System.out.println("I am here ");
+                    System.out.println(ANSI_BLUE+"Previous frame missing.Not saving it in server."+ANSI_RESET);
 
                     errorMode=1;
 
@@ -125,7 +130,7 @@ public class FileReceiver  {
                 ////
 
                 String awknowledgement=payloadWithChecksum.substring(16,24);
-                System.out.println("Kind of frame :"+ kindOfFrame+" Sequence no: "+sequenceNo +" ("+ sequence +") Awknoledgement no: "+awknowledgement);
+                System.out.println("Kind of frame :"+ kindOfFrame+ANSI_GREEN+" Sequence no: "+sequenceNo +" ("+ sequence +")"+ANSI_RESET+" Awknoledgement no: "+awknowledgement);
                 String payload=payloadWithChecksum.substring(24,payloadWithChecksum.length()-8);
                 String checkSum=payloadWithChecksum.substring(payloadWithChecksum.length()-8,payloadWithChecksum.length());
                 System.out.println("Received Payload: "+payload);
@@ -155,25 +160,31 @@ public class FileReceiver  {
                 e1.printStackTrace();
             }
 
-            total += bytesRead;
+            if(errorMode==0) {
+
+                total += bytesRead;
+            }
             try {
-                printWriter.println(total+" -receieved in server");
+                printWriter.println("Total: "+total+" bytes receieved in server");
                 printWriter.flush();
 
 
 
-
-                bos.write(receivedPayload, 0, bytesRead);
+                if(errorMode==0) {
+                    bos.write(receivedPayload, 0, bytesRead);
+                }
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-            System.out.println(total + " received");
+            System.out.println(total + " saved in server.");
 
             if(sequenceNo%8==0){
-                printWriter.println(total+" -8 no receiveed in ................");
-                printWriter.println(sequenceNo);
+                printWriter.println("Total: "+total+" bytes received in server");
+                printWriter.println(lastSequenceNo);
 
                 printWriter.flush();
+
+                errorMode=0;
 
             }
 
